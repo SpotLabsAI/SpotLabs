@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { WritableAuthContextType, useAuth } from "./hooks/AuthContext";
 import { initAuth } from "./lib/auth";
 import Login from "./pages/Login";
-import { getFacts } from "./lib/utils";
 import { WritableFactContextType, useFact } from "./hooks/FactContext";
-import { addFact, deleteFact } from "./lib/fact";
 import * as webllm from "@mlc-ai/web-llm";
 
 function App() {
@@ -27,8 +25,8 @@ function App() {
       await chat.reload("GORILLA", {
         conv_template: "custom",
         conv_config: {
-          system: "Do not reply to the user. Only reply with the required function call.",
-          roles: ["USER", "ASSISTANT"],
+          system: "SYSTEM: Do not reply to the user. Only reply with the required function call.\n",
+          roles: ["SYSTEM", "USER", "ASSISTANT"],
           seps: ["<<question>>", "<<function>>"],
           separator_style: "Two",
           offset: 0,
