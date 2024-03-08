@@ -6,11 +6,9 @@ import { AuthProvider } from "./hooks/AuthContext";
 import { FactProvider } from "./hooks/FactContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <FactProvider>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </FactProvider>
-  </React.StrictMode>
+  <FactProvider>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </FactProvider>
 );

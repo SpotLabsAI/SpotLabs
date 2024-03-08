@@ -1,17 +1,40 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { WritableAuthContextType, useAuth } from "./hooks/AuthContext";
 import { initAuth } from "./lib/auth";
 import Login from "./pages/Login";
 import { getFacts } from "./lib/utils";
 import { WritableFactContextType, useFact } from "./hooks/FactContext";
 import { addFact, deleteFact } from "./lib/fact";
+import * as webllm from "@mlc-ai/web-llm";
 
 function App() {
   const auth: WritableAuthContextType = useAuth();
   const fact: WritableFactContextType = useFact();
 
+  const [label, setLabel] = useState<string>("");
+  const [chat, setChat] = useState<webllm.ChatModule | null>(null);
+
   useEffect(() => {
     initAuth(auth);
+
+    const chat = new webllm.ChatModule();
+    chat.setInitProgressCallback((report: webllm.InitProgressReport) => {
+      setLabel(`init-label ${report.text}`);
+    });
+
+    (async () => {
+      await chat.reload("Llama-2-7b-chat-hf-q4f32_1");
+
+      const generateProgressCallback = (_step: number, message: string) => {
+        setLabel(`generate-label ${message}`);
+      };
+
+      const prompt0 = "What is the capital of Canada?";
+      setLabel(`prompt-label ${prompt0}`);
+      const reply0 = await chat.generate(prompt0, generateProgressCallback);
+      console.log(reply0);
+    })();
+    setChat(chat);
   }, []);
 
   return (
@@ -19,38 +42,7 @@ function App() {
       {auth.value.state === "initialized" ? (
         <>
           <p>Logged in</p>
-          <button
-            onClick={async (e) => {
-              e.preventDefault();
-              const res = await addFact({
-                type: "cal",
-                content: "i am the glob go gab galab the shwabble dabble wabble gabble flibba blabba blab",
-              }, fact, auth);
-              console.log(res);
-            }}
-          >
-            Add a fact
-          </button>
-
-          <button
-            onClick={async (e) => {
-              e.preventDefault();
-              const res = getFacts(fact);
-              console.log(res);
-            }}
-          >
-            Get all facts
-          </button>
-
-          <button
-            onClick={async (e) => {
-              e.preventDefault();
-              const res = await deleteFact(7n, auth, fact);
-              console.log(res);
-            }}
-          >
-            DELETE FACT ID: 4
-          </button>
+          <p>{label}</p>
         </>
       ) : (
         <Login />

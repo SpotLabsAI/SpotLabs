@@ -1,7 +1,7 @@
 import { AuthClient } from "@dfinity/auth-client";
 import { CryptoService } from "../lib/crypto";
 import type { JsonnableDelegationChain } from "@dfinity/identity/lib/cjs/identity/delegation";
-import { WritableContextType } from "../hooks/AuthContext";
+import { WritableAuthContextType } from "../hooks/AuthContext";
 import { createActor } from "../../../declarations/ii_integration_backend";
 import { _SERVICE } from "../../../declarations/ii_integration_backend/ii_integration_backend.did";
 
@@ -9,7 +9,7 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function initAuth(auth: WritableContextType) {
+export async function initAuth(auth: WritableAuthContextType) {
   const client = await AuthClient.create({
     idleOptions: { disableIdle: true },
   });
@@ -25,7 +25,7 @@ export async function initAuth(auth: WritableContextType) {
   }
 }
 
-export function login(auth: WritableContextType) {
+export function login(auth: WritableAuthContextType) {
   const currentAuth = auth.value;
 
   if (currentAuth.state === "anonymous") {
@@ -36,7 +36,7 @@ export function login(auth: WritableContextType) {
   }
 }
 
-export async function logout(auth: WritableContextType) {
+export async function logout(auth: WritableAuthContextType) {
   const currentAuth = auth.value;
 
   if (currentAuth.state === "initialized") {
@@ -51,7 +51,7 @@ export async function logout(auth: WritableContextType) {
 }
 
 export async function authenticate(
-  auth: WritableContextType,
+  auth: WritableAuthContextType,
   client: AuthClient
 ) {
   console.log("AUTHETNTICATE");
@@ -120,7 +120,7 @@ export async function authenticate(
 }
 
 // set a timer when the II session will expire and log the user out
-function handleSessionTimeout(auth: WritableContextType) {
+function handleSessionTimeout(auth: WritableAuthContextType) {
   // upon login the localstorage items may not be set, wait for next tick
   setTimeout(() => {
     try {
