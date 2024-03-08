@@ -16,6 +16,7 @@
     "src/ii_integration_frontend"
   ],
   "dependencies": {
-    "@dfinity/auth-client": "^1.0.1"
+    "@dfinity/auth-client": "^1.0.1",
+    "artyom.js": "^1.0.6"
   }
 }
