@@ -23,7 +23,19 @@ function App() {
     });
 
     (async () => {
-      await chat.reload("Llama-2-7b-chat-hf-q4f32_1");
+      console.log("ChatModule init");
+      await chat.reload("RedPajama-INCITE-Chat-3B-v1-q4f16_1", {}, {
+        "model_list": [
+          {
+            "model_url": "https://huggingface.co/mlc-ai/RedPajama-INCITE-Chat-3B-v1-q4f16_1-MLC/resolve/main/",
+            "local_id": "RedPajama-INCITE-Chat-3B-v1-q4f16_1",
+            "model_lib_url": "https://raw.githubusercontent.com/mlc-ai/binary-mlc-llm-libs/main/RedPajama-INCITE-Chat-3B-v1/RedPajama-INCITE-Chat-3B-v1-q4f16_1-ctx2k-webgpu.wasm",
+            "vram_required_MB": 2972.09,
+            "low_resource_required": false,
+            "required_features": ["shader-f16"],
+          },
+        ],
+      });
 
       const generateProgressCallback = (_step: number, message: string) => {
         setLabel(`generate-label ${message}`);
