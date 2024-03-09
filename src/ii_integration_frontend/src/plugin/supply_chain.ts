@@ -10,13 +10,13 @@ const SupplyChainPlugin: plugin = {
       name: "Query",
       description: "Query the supply chain.",
       accessible_facts: ["supply_chain"],
-      prompt_transformer: (facts: string, input: string) => input + " from the following data structure: [{title=aboey, origin=UK}, {title=baba, origin=US}, {title=kitchen, origin=UK}]",
+      prompt_transformer: (facts: string, input: string) => input + " and return the function create_supply_chain",
     },
     {
       name: "Update",
       description: "Update the supply chain.",
       accessible_facts: ["supply_chain"],
-      prompt_transformer: (facts: string, input: string) => "My Facts: " + facts + ", My Input: " + input,
+      prompt_transformer: (facts: string, input: string) => input + " and return the function update_supply_chain",
     },
     {
       name: "Create",
@@ -28,7 +28,7 @@ const SupplyChainPlugin: plugin = {
       name: "Delete",
       description: "Delete an object from the supply chain list",
       accessible_facts: ["supply_chain"],
-      prompt_transformer: (facts: string, input: string) => input + " from the following data structure: [{title=aboey, origin=UK}, {title=baba, origin=US}, {title=kitchen, origin=UK}]"
+      prompt_transformer: (facts: string, input: string) => input + " from []"
     },
   ],
 };
