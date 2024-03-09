@@ -53,9 +53,16 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
     <div className="chat-to-ai">
       <div className="chat-container">
         <div className="chat-box">
+          {chatHistory.length === 0 ? (
+            <div className="chat-message sender-ai initial">
+              Hello! I am your personal assistant. How can I help you today?
+            </div>
+          ) : (
+            <></>
+          )}
           {chatHistory.map((message, index) => {
             return (
-              <>
+              <div key={index}>
                 {message.sender === "user" ? (
                   <p className="chat-message timestamp">
                     {new Date(message.timestamp).toLocaleTimeString(undefined, {
@@ -72,17 +79,24 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
                     message.sender === "user" ? "user" : "ai"
                   } ${message.error ? "error" : ""}`}
                 >
-                  {message.sender === "ai" ? <CornerDownRight size={"1.2rem"} style={{
-                    minWidth: "1.2rem",
-                    minHeight: "1.2rem",
-                  }}/> : <></>}
+                  {message.sender === "ai" ? (
+                    <CornerDownRight
+                      size={"1.2rem"}
+                      style={{
+                        minWidth: "1.2rem",
+                        minHeight: "1.2rem",
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
                   {message.content}
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
-        {loading ? <p className="ai-hint">AI is thinking{dots}</p> : <></>}
+        {loading ? <p className="ai-hint">AI is typing{dots}</p> : <></>}
         <div className="input-container">
           <input
             type="text"
