@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WritableAuthContextType, useAuth } from "../hooks/AuthContext";
 import { WritableFactContextType, useFact } from "../hooks/FactContext";
 import { getFacts } from "../lib/utils";
@@ -21,6 +21,7 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [dots, setDots] = useState<string>("");
   const auth: WritableAuthContextType = useAuth();
   const fact: WritableFactContextType = useFact();
 
@@ -39,6 +40,14 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
       },
     ]);
   }
+
+  useEffect(() => {
+    setInterval(() => {
+      setDots((prevDots) => {
+        return prevDots.length >= 3 ? "" : prevDots + ".";
+      });
+    }, 1000);
+  }, []);
 
   return (
     <div className="chat-to-ai">
@@ -63,13 +72,17 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
                     message.sender === "user" ? "user" : "ai"
                   } ${message.error ? "error" : ""}`}
                 >
-                  {message.sender === "ai" ? <CornerDownRight /> : <></>}
+                  {message.sender === "ai" ? <CornerDownRight size={"1.2rem"} style={{
+                    minWidth: "1.2rem",
+                    minHeight: "1.2rem",
+                  }}/> : <></>}
                   {message.content}
                 </div>
               </>
             );
           })}
         </div>
+        {loading ? <p className="ai-hint">AI is thinking{dots}</p> : <></>}
         <div className="input-container">
           <input
             type="text"
@@ -108,7 +121,6 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
                   (await chat?.generate(prompt, (_, curr) => {
                     console.log(curr);
                   })) || "";
-                chat?.resetChat();
 
                 let processed = res;
                 if (res.includes("<<function>>")) {
@@ -218,9 +230,9 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
                   }
                 } catch (e) {
                   addChatMessage({
-                    content: "Error. Please try again.",
+                    content: res,
                     sender: "ai",
-                    error: true,
+                    error: false,
                   });
                 }
               })();

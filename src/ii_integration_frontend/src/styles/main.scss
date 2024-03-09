@@ -71,6 +71,7 @@ body {
   flex: 3;
   background-color: #1e1e24;
   z-index: 5;
+  overflow-y: hidden;
 }
 
 .chat-container {
@@ -83,7 +84,7 @@ body {
   flex-grow: 1;
   padding: 20px;
   padding-bottom: 0;
-  overflow-y: overflow;
+  overflow-y: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -130,8 +131,18 @@ body {
 
 .input-container {
   padding: 10px;
+  padding-top: 0;
   display: flex;
-  align-items: center; /* Align items vertically */
+  align-items: center;
+}
+
+.ai-hint {
+  margin-top: 5px;
+  margin-bottom: 0;
+  margin-left: 15px;
+  color: #c2c2c2;
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
 input[type="text"] {
