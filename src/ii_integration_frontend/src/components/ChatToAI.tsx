@@ -4,20 +4,72 @@ import { WritableFactContextType, useFact } from "../hooks/FactContext";
 import { getFacts } from "../lib/utils";
 import * as webllm from "@mlc-ai/web-llm";
 import { addFact, deleteFact, updateFact } from "../lib/fact";
+import { CornerDownRight, LoaderCircle } from "lucide-react";
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
 };
 
+type ChatMessage = {
+  timestamp: number;
+  error: boolean;
+  content: string;
+  sender: "user" | "ai";
+};
+
 function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
   const [value, setValue] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const auth: WritableAuthContextType = useAuth();
   const fact: WritableFactContextType = useFact();
+
+  function addChatMessage(message: {
+    content: string;
+    sender: "user" | "ai";
+    error?: boolean;
+  }) {
+    setLoading(message.sender === "user");
+    setChatHistory((prev) => [
+      ...prev,
+      {
+        timestamp: Date.now(),
+        error: false,
+        ...message,
+      },
+    ]);
+  }
 
   return (
     <div className="chat-to-ai">
       <div className="chat-container">
-        <div className="chat-box">{/* Add chat history display here */}</div>
+        <div className="chat-box">
+          {chatHistory.map((message, index) => {
+            return (
+              <>
+                {message.sender === "user" ? (
+                  <p className="chat-message timestamp">
+                    {new Date(message.timestamp).toLocaleTimeString(undefined, {
+                      hour12: false,
+                      hourCycle: "h24",
+                    })}
+                  </p>
+                ) : (
+                  <></>
+                )}
+                <div
+                  key={index}
+                  className={`chat-message sender-${
+                    message.sender === "user" ? "user" : "ai"
+                  } ${message.error ? "error" : ""}`}
+                >
+                  {message.sender === "ai" ? <CornerDownRight /> : <></>}
+                  {message.content}
+                </div>
+              </>
+            );
+          })}
+        </div>
         <div className="input-container">
           <input
             type="text"
@@ -28,90 +80,148 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
             }}
           />
           <button
+            className={`send-button ${loading ? "loading" : ""}`}
             onClick={(e) => {
               e.preventDefault();
-              console.log("ChatToAI.tsx: value:", value);
-              const facts = getFacts(fact)?.filter((fact) => fact.fact.type === "cal").map((fact) => {
-                const data = JSON.parse(fact.fact.content);
-                return {
-                  eventId: fact.id,
-                  title: data.title,
-                  date: data.date,
-                  summary: data.summary,
-                };
-              }) || [];
+              const val = value.trim();
+              setValue("");
+              addChatMessage({
+                content: val,
+                sender: "user",
+              });
+              const facts =
+                getFacts(fact)
+                  ?.filter((fact) => fact.fact.type === "cal")
+                  .map((fact) => {
+                    const data = JSON.parse(fact.fact.content);
+                    return {
+                      eventId: fact.id,
+                      title: data.title,
+                      date: data.date,
+                      summary: data.summary,
+                    };
+                  }) || [];
               const factsAsString = JSON.stringify(facts);
-              const prompt = `Current events are ${factsAsString}. ${value}`;
-              console.log(prompt);
+              const prompt = `Current events are ${factsAsString}. ${val}`;
               (async () => {
-                const res = await chat?.generate(prompt, (_, curr) => {
-                  console.log(curr);
-                }) || "";
+                const res =
+                  (await chat?.generate(prompt, (_, curr) => {
+                    console.log(curr);
+                  })) || "";
                 chat?.resetChat();
-                console.log(res);
 
-                // Remove all letters before and including substring "<<function>>"
                 let processed = res;
                 if (res.includes("<<function>>")) {
                   processed = res.substring(res.indexOf("<<function>>") + 12);
                 }
 
-                // Process command of format name(param=value, param2=val, ...)
+                try {
+                  const name = processed.substring(0, 2);
+                  const params = processed
+                    .substring(3)
+                    .slice(0, -1)
+                    .split(",")
+                    .map((param) => {
+                      const [key, value] = param.split("=");
+                      return {
+                        key: key.trim(),
+                        value: value
+                          .trim()
+                          .replaceAll("'", "")
+                          .replaceAll('"', ""),
+                      };
+                    });
 
-                const name = processed.substring(0, 2);
-                const params = processed.substring(3).slice(0, -1).split(",").map((param) => {
-                  const [key, value] = param.split("=");
-                  return { key: key.trim(), value: value.trim().replaceAll("'", "").replaceAll("\"", "") };
-                });
+                  const paramsMap = new Map<string, string>();
+                  params.forEach((param) => {
+                    paramsMap.set(param.key, String(param.value));
+                  });
 
-                const paramsMap = new Map<string, string>();
-                params.forEach((param) => {
-                  paramsMap.set(param.key, String(param.value));
-                });
-
-                switch (name) {
-                  case "cc":
-                    const newEvent = {
-                      title: paramsMap.get("title") || "",
-                      date: paramsMap.get("date") || "",
-                      summary: paramsMap.get("summary") || "",
-                    };
-                    const res = await addFact({
-                      type: "cal",
-                      content: JSON.stringify(newEvent),
-                    }, fact, auth);
-                    console.log(res);
-                    break;
-                  case "cd":
-                    const eventId = paramsMap.get("eventId");
-                    if (eventId) {
-                      const res = await deleteFact(BigInt(eventId), auth, fact);
-                      console.log(res);
-                    }
-                    break;
-                  case "cu":
-                    const updatedEvent = {
-                      title: paramsMap.get("title") || "",
-                      date: paramsMap.get("date") || "",
-                      summary: paramsMap.get("summary") || "",
-                    };
-                    const eventId2 = paramsMap.get("eventId");
-                    if (eventId2) {
-                      const res = await updateFact(BigInt(eventId2), {
-                        type: "cal",
-                        content: JSON.stringify(updatedEvent),
-                      }, fact, auth);
-                      console.log(res);
-                    } else {
-                      const res = await addFact({
-                        type: "cal",
-                        content: JSON.stringify(updatedEvent),
-                      }, fact, auth);
-                      console.log(res);
-                    }
-                    break;
-                  default:
-                    console.log("Unrecognized command:", name);
+                  switch (name) {
+                    case "cc":
+                      const newEvent = {
+                        title: paramsMap.get("title") || "",
+                        date: paramsMap.get("date") || "",
+                        summary: paramsMap.get("summary") || "",
+                      };
+                      await addFact(
+                        {
+                          type: "cal",
+                          content: JSON.stringify(newEvent),
+                        },
+                        fact,
+                        auth
+                      );
+                      addChatMessage({
+                        content: `Added "${newEvent.title}" to plan.`,
+                        sender: "ai",
+                      });
+                      break;
+                    case "cd":
+                      const eventId = paramsMap.get("eventId");
+                      if (eventId) {
+                        const f = JSON.parse(
+                          getFacts(fact)?.find(
+                            (fact) => fact.id === BigInt(eventId)
+                          )?.fact.content ?? "{title: 'Unknown'}"
+                        ).title;
+                        await deleteFact(BigInt(eventId), auth, fact);
+                        addChatMessage({
+                          content: `Successfully deleted "${f}".`,
+                          sender: "ai",
+                        });
+                      } else {
+                        addChatMessage({
+                          content: `Could not find event to delete.`,
+                          sender: "ai",
+                        });
+                      }
+                      break;
+                    case "cu":
+                      const updatedEvent = {
+                        title: paramsMap.get("title") || "",
+                        date: paramsMap.get("date") || "",
+                        summary: paramsMap.get("summary") || "",
+                      };
+                      const eventId2 = paramsMap.get("eventId");
+                      if (eventId2) {
+                        await updateFact(
+                          BigInt(eventId2),
+                          {
+                            type: "cal",
+                            content: JSON.stringify(updatedEvent),
+                          },
+                          fact,
+                          auth
+                        );
+                        addChatMessage({
+                          content: `Updated "${updatedEvent.title}".`,
+                          sender: "ai",
+                        });
+                      } else {
+                        await addFact(
+                          {
+                            type: "cal",
+                            content: JSON.stringify(updatedEvent),
+                          },
+                          fact,
+                          auth
+                        );
+                        addChatMessage({
+                          content: `Added "${updatedEvent.title}" to plan.`,
+                          sender: "ai",
+                        });
+                      }
+                      break;
+                    default:
+                      console.log("Unrecognized command:", name);
+                  }
+                } catch (e) {
+                  addChatMessage({
+                    content: "Error. Please try again.",
+                    sender: "ai",
+                    error: true,
+                  });
                 }
               })();
             }}

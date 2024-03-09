@@ -34,7 +34,7 @@ function Home({ chat }: { chat: webllm.ChatModule | null }) {
             <div className="tile is-vertical is-6">
               <div className="tile">
                 <div className="tile is-parent is-vertical">
-                  <article className="tile is-child notification pi">
+                  <article className="tile is-child notification bio">
                     <div className="card-top">
                       <div className="card-dot">
                         <User2 />
@@ -47,7 +47,7 @@ function Home({ chat }: { chat: webllm.ChatModule | null }) {
               </div>
             </div>
             <div className="tile is-parent">
-              <article className="tile is-child notification cal">
+              <article className="tile is-child notification planner">
                 <div className="card-top">
                   <div className="card-dot">
                     <CalendarDays />

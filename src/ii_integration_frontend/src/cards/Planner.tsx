@@ -6,7 +6,7 @@ function Planner() {
   const fact: WritableFactContextType = useFact();
 
   return (
-    <div>
+    <div className="planner-list">
       {getFacts(fact)?.map((entry, index) => {
         const data = JSON.parse(entry.fact.content);
         return (
