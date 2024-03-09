@@ -1,13 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ChatToAI from "../components/ChatToAI";
 import Toolbar from "../components/Toolbar";
 import "./../styles/main.scss";
 import { CalendarDays, User2 } from "lucide-react";
-import Planner from "../cards/Planner";
-import Biography from "../cards/Biography";
 import * as webllm from "@mlc-ai/web-llm";
+import SupplyChainPlugin from "../plugin/supply_chain";
+
+export type Tab = "planner" | "pwg" | "summary";
 
 function Home({ chat }: { chat: webllm.ChatModule | null }) {
+  const [tab, setTab] = useState<Tab>("planner");
+
   useEffect(() => {
     const blob = document.getElementById("blob");
     window.onpointermove = (event) => {
@@ -25,42 +28,13 @@ function Home({ chat }: { chat: webllm.ChatModule | null }) {
 
   return (
     <div className="app">
-      <Toolbar />
+      <Toolbar setTab={setTab} />
       <div className="main-section">
         <div id="blob"></div>
         <div id="blur"></div>
-        <div className="content">
-          <div className="tile is-ancestor is-top">
-            <div className="tile is-vertical is-6">
-              <div className="tile">
-                <div className="tile is-parent is-vertical">
-                  <article className="tile is-child notification bio">
-                    <div className="card-top">
-                      <div className="card-dot">
-                        <User2 />
-                      </div>
-                      <h1>Biography</h1>
-                    </div>
-                    <Biography />
-                  </article>
-                </div>
-              </div>
-            </div>
-            <div className="tile is-parent">
-              <article className="tile is-child notification planner">
-                <div className="card-top">
-                  <div className="card-dot">
-                    <CalendarDays />
-                  </div>
-                  <h1>Planner</h1>
-                </div>
-                <Planner />
-              </article>
-            </div>
-          </div>
-        </div>
+        <div className="content"></div>
       </div>
-      <ChatToAI chat={chat}/>
+      <ChatToAI chat={chat} plugin={SupplyChainPlugin}/>
     </div>
   );
 }

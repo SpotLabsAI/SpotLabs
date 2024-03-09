@@ -52,7 +52,7 @@ body {
 }
 
 .main-section {
-  flex: 7;
+  flex: 2;
   background-color: #131316;
   z-index: 1;
 }
@@ -173,22 +173,35 @@ input[type="text"] {
 }
 
 button {
-  background-color: #2e2436;
-  color: white;
-  padding: 15px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 15px;
-  transition: 0.3s;
-  font-size: 16px;
-  outline: none;
-  margin-top: 10px;
-  margin-right: 10px;
+  background-color: #2e2436 !important;
+  color: white !important;
+  padding: 15px 20px !important;
+  border: none !important;
+  cursor: pointer !important;
+  border-radius: 15px !important;
+  transition: 0.3s !important;
+  font-size: 16px !important;
+  outline: none !important;
+  margin-top: 10px !important;
+  margin-right: 10px !important;
 }
 
 button:hover {
   background-color: #5e157e;
   transform: scale(1.05);
+}
+
+ul.dropdown-menu {
+  background-color: #2a2a2e !important;
+  border: none !important;
+}
+
+a.dropdown-item {
+  color: #fff !important;
+
+  &:hover {
+    background-color: #39393d !important;
+  }
 }
 
 .toolbar-icon {
@@ -320,7 +333,7 @@ button:hover {
 
 .notification {
   background-color: #1e1e24;
-  border-radius: 10px;
+  border-radius: 30px !important;
   position: relative;
   padding: 1.25rem;
   color: #fff;
