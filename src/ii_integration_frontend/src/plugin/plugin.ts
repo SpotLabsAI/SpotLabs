@@ -2,7 +2,7 @@ export type plugin_func = {
   name: string;
   description: string;
   accessible_facts: string[];
-  prompt_transformer: (facts: string, input: string) => string;
+  prompt_transformer:  string;
 };
 
 export type plugin = {
@@ -11,4 +11,11 @@ export type plugin = {
   version: string;
   fact_id: string;
   functions: plugin_func[];
+};
+
+export const nullFunc: plugin_func = {
+  name: "",
+  description: "",
+  accessible_facts: [],
+  prompt_transformer: "",
 };

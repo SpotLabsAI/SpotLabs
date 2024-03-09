@@ -138,7 +138,9 @@ function ChatToAI({
                   )
                   .map((fact) => JSON.parse(fact.fact.content)) || [];
               const factsAsString = JSON.stringify(facts);
-              const prompt = currFunc.prompt_transformer(factsAsString, val);
+              const prompt = currFunc.prompt_transformer
+                .replaceAll("$$facts$$", factsAsString)
+                .replaceAll("$$input$$", val);
               console.log(prompt);
               (async () => {
                 const res =

@@ -19,6 +19,7 @@
     "@coreui/coreui": "^4.3.2",
     "@coreui/react": "^4.11.1",
     "@dfinity/auth-client": "^1.0.1",
-    "@mlc-ai/web-llm": "^0.2.24"
+    "@mlc-ai/web-llm": "^0.2.24",
+    "react-json-editor": "^0.3.0"
   }
 }

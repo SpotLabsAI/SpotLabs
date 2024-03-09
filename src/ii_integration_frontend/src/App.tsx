@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { WritableAuthContextType, useAuth } from "./hooks/AuthContext";
 import { initAuth } from "./lib/auth";
-import { WritableFactContextType, useFact } from "./hooks/FactContext";
 import * as webllm from "@mlc-ai/web-llm";
 import Loading, { LoadingReport } from "./pages/Loading";
 import Home from "./pages/Home";
+import commandsJson from "./lib/commands.json";
+import PluginManager from "./pages/PluginManager";
 
 function App() {
   const auth: WritableAuthContextType = useAuth();
 
   const [chat, setChat] = useState<webllm.ChatModule | null>(null);
+  const [pluginWindowOpen, setPluginWindowOpen] = useState<boolean>(false);
   const [downloadReport, setDownloadReport] = useState<LoadingReport>({
     report: null,
     done: false,
@@ -54,10 +56,16 @@ function App() {
     setChat(chat);
   }, []);
 
+  // Check if path is plugin_manager
+
   return (
     <main>
       {auth.value.state === "initialized" && downloadReport.done ? (
-        <Home chat={chat} />
+        pluginWindowOpen ? (
+          <PluginManager close={() => setPluginWindowOpen(false)}/>
+        ) : (
+          <Home chat={chat} pluginManagerOpen={() => setPluginWindowOpen(true)}/>
+        )
       ) : (
         <Loading report={downloadReport} />
       )}
