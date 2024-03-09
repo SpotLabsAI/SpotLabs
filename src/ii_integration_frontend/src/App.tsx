@@ -34,7 +34,7 @@ function App() {
         {
           conv_template: "custom",
           conv_config: {
-            system: `The assistant does not reply to the user. The assistant replies with a function call on the format api_name(params). The functions are ` + JSON.stringify(commandsJson) + "\n", 
+            system: `The assistant does not reply to the user. The assistant replies with a function call on the format api_name(params). The functions are ${JSON.stringify(commandsJson)}.\n`, 
             roles: ["USER", "ASSISTANT"],
             seps: ["<<question>>", "<<function>>"],
             separator_style: "Two",
