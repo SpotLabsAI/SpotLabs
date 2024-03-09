@@ -115,7 +115,7 @@ function ChatToAI({ chat }: { chat: webllm.ChatModule | null }) {
                     };
                   }) || [];
               const factsAsString = JSON.stringify(facts);
-              const prompt = `Current events are ${factsAsString}. ${val}`;
+              const prompt = ` Current events are ${factsAsString}. Today's current date is ${new Date().toLocaleDateString()}.  ${val}`;
               (async () => {
                 const res =
                   (await chat?.generate(prompt, (_, curr) => {
