@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { WritableAuthContextType, useAuth } from "../hooks/AuthContext";
 import { WritableFactContextType, useFact } from "../hooks/FactContext";
 import { getFacts } from "../lib/utils";
 import * as webllm from "@mlc-ai/web-llm";
-import { addFact, deleteFact, updateFact } from "../lib/fact";
 import { CornerDownRight } from "lucide-react";
 import Dropdown from "./Dropdown";
 import { plugin, plugin_func } from "../plugin/plugin";
@@ -31,7 +29,6 @@ function ChatToAI({
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [dots, setDots] = useState<string>("");
   const [currFunc, setCurrFunc] = useState<plugin_func>(plugin.functions[0]);
-  const auth: WritableAuthContextType = useAuth();
   const fact: WritableFactContextType = useFact();
 
   function addChatMessage(message: {
