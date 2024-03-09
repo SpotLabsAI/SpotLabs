@@ -70,7 +70,7 @@ body {
 
 .chat-to-ai {
   flex: 3;
-  background-color: #1e1e24;
+  background-color: #1e1e24c0;
   z-index: 5;
   overflow-y: hidden;
 }
@@ -337,7 +337,7 @@ a.dropdown-item {
 }
 
 .notification {
-  background-color: #1e1e24;
+  background-color: #1e1e24c0;
   border-radius: 30px !important;
   position: relative;
   padding: 1.25rem;
@@ -532,7 +532,7 @@ a.dropdown-item {
 }
 
 .notification.planner {
-  height: 300px;
+  height: calc(100vh - 70px);
   overflow-y: scroll;
 }
 
