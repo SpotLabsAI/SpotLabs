@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import ChatToAI from "../components/ChatToAI";
 import Toolbar from "../components/Toolbar";
 import "./../styles/main.scss";
-import { CalendarDays, User2 } from "lucide-react";
 import * as webllm from "@mlc-ai/web-llm";
 import SupplyChainPlugin from "../plugin/supply_chain";
 
 export type Tab = "planner" | "pwg" | "summary";
 
-function Home({ chat }: { chat: webllm.ChatModule | null }) {
+function Home({ chat, pluginManagerOpen }: { chat: webllm.ChatModule | null, pluginManagerOpen: () => void}) {
   const [tab, setTab] = useState<Tab>("planner");
 
   useEffect(() => {
@@ -28,7 +27,7 @@ function Home({ chat }: { chat: webllm.ChatModule | null }) {
 
   return (
     <div className="app">
-      <Toolbar setTab={setTab} />
+      <Toolbar setPluginManagerOpen={pluginManagerOpen} />
       <div className="main-section">
         <div id="blob"></div>
         <div id="blur"></div>

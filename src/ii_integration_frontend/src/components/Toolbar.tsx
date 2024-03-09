@@ -1,30 +1,16 @@
-import { CalendarDays, Key, Settings, Text, User } from "lucide-react";
-import { Tab } from "../pages/Home";
+import { CalendarDays, Key, Plug, Settings, Text, User } from "lucide-react";
 
-function Toolbar({ setTab }: { setTab: (tab: Tab) => void }) {
+function Toolbar({ setPluginManagerOpen }: { setPluginManagerOpen: () => void }) {
   return (
     <div className="toolbar">
       <div className="top">
         <div
           className="toolbar-icon"
           onClick={(e) => {
-            setTab("planner");
+            setPluginManagerOpen();
           }}
         >
-          <CalendarDays size={"1em"} strokeWidth={1} />
-        </div>
-        <div
-          className="toolbar-icon"
-          onClick={(e) => {
-            setTab("pwg");
-          }}
-        >
-          <Key size={"1em"} strokeWidth={1} />
-        </div>
-        <div className="toolbar-icon" onClick={(e) => {
-          setTab("summary");
-        }}>
-          <Text size={"1em"} strokeWidth={1} />
+          <Plug size={"1em"} strokeWidth={1} />
         </div>
       </div>
       <div className="bottom">
