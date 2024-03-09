@@ -1,0 +1,18 @@
+.bio-textarea {
+    margin: 0.7rem 0;
+    padding: 14px;
+    border-radius: 0.5rem;
+    background-color: #292930;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+
+    // Fill container
+    width: calc(100% - 1.4rem);
+    height: 200px;
+    
+    // Uneditable
+    resize: none;
+    overflow: hidden;
+    border: none;
+    font-size: 1rem;
+    color: #fff;
+}

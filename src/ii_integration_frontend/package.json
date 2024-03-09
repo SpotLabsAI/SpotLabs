@@ -14,8 +14,10 @@
     "@dfinity/agent": "^0.15.7",
     "@dfinity/candid": "^0.15.7",
     "@dfinity/principal": "^0.15.7",
+    "lucide-react": "^0.352.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "sass": "^1.71.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
