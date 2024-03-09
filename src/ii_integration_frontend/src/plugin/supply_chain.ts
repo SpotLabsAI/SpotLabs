@@ -16,7 +16,7 @@ const SupplyChainPlugin: plugin = {
       name: "Update",
       description: "Update the supply chain.",
       accessible_facts: ["supply_chain"],
-      prompt_transformer: (facts: string, input: string) => input + " and return the function update_supply_chain",
+      prompt_transformer: (facts: string, input: string) => input + " the following data: [{send children}, {12-01-2024}, {12-02-2024}, {China}, {children yummy}] and return the function update_supply_chain",
     },
     {
       name: "Create",
