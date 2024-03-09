@@ -46,3 +46,26 @@ div.field.field-array {
     margin: 10px;
     padding: 10px;
 }
+
+div.plugin-card {
+    background-color: #292930;
+    border-radius: 0.5rem;
+    padding: 10px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+
+    div > p {
+        margin: 0;
+    }
+}
+
+div.delete-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-right: 20px;
+}

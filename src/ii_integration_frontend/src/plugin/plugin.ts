@@ -12,3 +12,10 @@ export type plugin = {
   fact_id: string;
   functions: plugin_func[];
 };
+
+export const nullFunc: plugin_func = {
+  name: "",
+  description: "",
+  accessible_facts: [],
+  prompt_transformer: "",
+};

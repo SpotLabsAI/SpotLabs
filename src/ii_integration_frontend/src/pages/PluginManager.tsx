@@ -7,9 +7,11 @@ import "./../styles/form.scss";
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 import { RJSFSchema } from "@rjsf/utils";
+import { addFact, deleteFact } from "../lib/fact";
+import { WritableAuthContextType, useAuth } from "../hooks/AuthContext";
+import { Trash } from "lucide-react";
 
 const schema: RJSFSchema = {
-  $schema: "http://json-schema.org/draft-04/schema#",
   type: "object",
   properties: {
     name: {
@@ -59,16 +61,24 @@ const schema: RJSFSchema = {
 
 const PluginManager = ({ close }: { close: () => void }) => {
   const fact: WritableFactContextType = useFact();
-  const [plugins, setPlugins] = useState<plugin[]>([]);
+  const auth: WritableAuthContextType = useAuth();
+  const [plugins, setPlugins] = useState<{ i: bigint; p: plugin }[]>([]);
 
   const [show, setShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
+  function updatePlugins() {
     setPlugins(
       getFacts(fact)
         ?.filter((fact) => fact.fact.type === "__plugin")
-        .map((fact) => JSON.parse(fact.fact.content) as plugin) ?? []
+        .map((fact) => {
+          return { i: fact.id, p: JSON.parse(fact.fact.content) as plugin };
+        }) ?? []
     );
+  }
+
+  useEffect(() => {
+    updatePlugins();
   }, []);
 
   return (
@@ -84,24 +94,68 @@ const PluginManager = ({ close }: { close: () => void }) => {
             color: "white",
           }}
         >
-          Plugin Manager
+          {loading ? "Loading..." : "Plugin Manager"}
         </h1>
         <div>
           {plugins.map((plugin) => (
-            <div key={plugin.name}>
-              <h2>{plugin.name}</h2>
-              <p>{plugin.description}</p>
+            <div key={plugin.i} className="plugin-card">
+              <div>
+                <h2>
+                  {plugin.p.name} v{plugin.p.version}
+                </h2>
+                <p>{plugin.p.description}</p>
+              </div>
+              <div className="delete-icon">
+                <Trash
+                  size={30}
+                  onClick={async (e) => {
+                    setLoading(true);
+                    await deleteFact(plugin.i, auth, fact);
+                    close();
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
         <button
+          style={{
+            display: show ? "none" : "block",
+          }}
           onClick={(e) => {
             setShow(true);
           }}
         >
           Create New
         </button>
-        {show ? <Form schema={schema} validator={validator} /> : <></>}
+        {show ? (
+          <Form
+            schema={schema}
+            validator={validator}
+            onSubmit={async (d, e) => {
+              setShow(false);
+              setLoading(true);
+              await addFact(
+                {
+                  type: "__plugin",
+                  content: JSON.stringify(d.formData),
+                },
+                fact,
+                auth
+              );
+              close();
+            }}
+          />
+        ) : (
+          <></>
+        )}
+        <button
+          onClick={(e) => {
+            close();
+          }}
+        >
+          Return
+        </button>
       </div>
     </div>
   );

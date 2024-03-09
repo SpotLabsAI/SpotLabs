@@ -187,6 +187,10 @@ button {
   margin-right: 10px !important;
 }
 
+.btn-group.dropup {
+  margin: 0;
+}
+
 button:hover {
   background-color: #5e157e;
   transform: scale(1.05);
