@@ -5,6 +5,8 @@ import { WritableFactContextType, useFact } from "./hooks/FactContext";
 import * as webllm from "@mlc-ai/web-llm";
 import Loading, { LoadingReport } from "./pages/Loading";
 import Home from "./pages/Home";
+//Importing commands from JSON
+import commandsJson from './lib/commands.json';
 
 function App() {
   const auth: WritableAuthContextType = useAuth();
@@ -26,12 +28,13 @@ function App() {
 
     (async () => {
       console.log("ChatModule init");
+      
       await chat.reload(
         "GORILLA",
         {
           conv_template: "custom",
           conv_config: {
-            system: `The assistant does not reply to the user. The assistant replies with a function call on the format api_name(params). The functions are [{"api_name": "cd", "description": "Delete a calendar event by its ID", "parameters": [{"name": "eventId", "description": "The ID of the event to be deleted"}]},{"api_name": "cc", "description": "Create an event with details from parameters provided by user", "parameters": [{"name": "title", "description": "The title of the event"}, {"name": "date", "description": "The date of the event in dd-mm-yyyy format"}, {"name": "summary", "description": "A brief summary of the event from user's prompt"}]},{"api_name": "cu", "description": "Replace an existing event with parameters provided by user", "parameters": [{"name": "eventId", "description": "The ID of the event to replace."}, {"name": "title", "description": "The new title of the event"}, {"name": "date", "description": "The new date of the event in dd-mm-yyyy format"}, {"name": "summary", "description": "A new brief summary of the event from new user's prompt"}]}]\n`, 
+            system: `The assistant does not reply to the user. The assistant replies with a function call on the format api_name(params). The functions are ` + JSON.stringify(commandsJson) + "\n", 
             roles: ["USER", "ASSISTANT"],
             seps: ["<<question>>", "<<function>>"],
             separator_style: "Two",
