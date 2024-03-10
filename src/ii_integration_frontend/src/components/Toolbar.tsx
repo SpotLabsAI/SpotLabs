@@ -1,16 +1,30 @@
-import { CalendarDays, Key, Plug, Settings, Text, User } from "lucide-react";
+import { LineChart, Plug, Settings, User } from "lucide-react";
 
-function Toolbar({ setPluginManagerOpen }: { setPluginManagerOpen: () => void }) {
+function Toolbar({
+  setPluginManagerOpen,
+  setDataWindowOpen,
+}: {
+  setPluginManagerOpen: () => void;
+  setDataWindowOpen: () => void;
+}) {
   return (
     <div className="toolbar">
       <div className="top">
         <div
           className="toolbar-icon"
-          onClick={(e) => {
+          onClick={(_) => {
             setPluginManagerOpen();
           }}
         >
           <Plug size={"1em"} strokeWidth={1} />
+        </div>
+        <div
+          className="toolbar-icon"
+          onClick={(_) => {
+            setDataWindowOpen();
+          }}
+        >
+          <LineChart size={"1em"} strokeWidth={1} />
         </div>
       </div>
       <div className="bottom">

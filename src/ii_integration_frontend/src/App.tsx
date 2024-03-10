@@ -6,12 +6,14 @@ import Loading, { LoadingReport } from "./pages/Loading";
 import Home from "./pages/Home";
 import commandsJson from "./lib/commands.json";
 import PluginManager from "./pages/PluginManager";
+import Visualizer from "./pages/Visualizer";
 
 function App() {
   const auth: WritableAuthContextType = useAuth();
 
   const [chat, setChat] = useState<webllm.ChatModule | null>(null);
   const [pluginWindowOpen, setPluginWindowOpen] = useState<boolean>(false);
+  const [dataWindowOpen, setDataWindowOpen] = useState<boolean>(false);
   const [downloadReport, setDownloadReport] = useState<LoadingReport>({
     report: null,
     done: false,
@@ -62,9 +64,15 @@ function App() {
     <main>
       {auth.value.state === "initialized" && downloadReport.done ? (
         pluginWindowOpen ? (
-          <PluginManager close={() => setPluginWindowOpen(false)}/>
+          <PluginManager close={() => setPluginWindowOpen(false)} />
+        ) : dataWindowOpen ? (
+          <Visualizer close={() => setDataWindowOpen(false)}/>
         ) : (
-          <Home chat={chat} pluginManagerOpen={() => setPluginWindowOpen(true)}/>
+          <Home
+            chat={chat}
+            pluginManagerOpen={() => setPluginWindowOpen(true)}
+            dataWindowOpen={() => setDataWindowOpen(true)}
+          />
         )
       ) : (
         <Loading report={downloadReport} />

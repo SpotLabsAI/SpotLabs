@@ -14,9 +14,11 @@ import SustainabilityPlugin from "../plugin/sustainability";
 function Home({
   chat,
   pluginManagerOpen,
+  dataWindowOpen,
 }: {
   chat: webllm.ChatModule | null;
   pluginManagerOpen: () => void;
+  dataWindowOpen: () => void;
 }) {
   const fact: WritableFactContextType = useFact();
 
@@ -46,7 +48,10 @@ function Home({
 
   return (
     <div className="app">
-      <Toolbar setPluginManagerOpen={pluginManagerOpen} />
+      <Toolbar
+        setPluginManagerOpen={pluginManagerOpen}
+        setDataWindowOpen={dataWindowOpen}
+      />
       <div className="main-section">
         <div id="blob"></div>
         <div id="blur"></div>
