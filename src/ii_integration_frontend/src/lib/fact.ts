@@ -58,6 +58,10 @@ export async function refreshFacts(
   cryptoService: CryptoService,
   factsStore: WritableFactContextType
 ) {
+  if (cryptoService.paused) {
+    setTimeout(() => refreshFacts(actor, cryptoService, factsStore), 1000);
+    return;
+  }
   const encryptedFacts = await actor.get_facts();
 
   // did we get logged out?
