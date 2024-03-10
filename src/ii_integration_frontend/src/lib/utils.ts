@@ -99,6 +99,9 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
           fact,
           auth
         );
+      default:
+        throw new Error("Command unrecognized: ", json.function)
+
     }
       
 
