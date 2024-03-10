@@ -154,13 +154,7 @@ function ChatToAI({
                     console.log(curr);
                   })) || "";
                 await chat?.resetChat();
-
-                addChatMessage({
-                  content: res,
-                  sender: "ai",
-                  error: false,
-                });
-                outToFact(res, auth, fact);
+                outToFact(res, auth, fact, addChatMessage);
               })();
             }}
           >

@@ -96,9 +96,16 @@ const PluginManager = ({ close }: { close: () => void }) => {
         >
           {loading ? "Loading..." : "Plugin Manager"}
         </h1>
+        <a style={{
+          color: "white",
+          fontStyle: "italic",
+          textDecoration: "underline",
+        }} href="https://spotlabsai.github.io/" target="_blank">View documentation.</a>
         <div>
           {plugins.map((plugin) => (
-            <div key={plugin.i} className="plugin-card">
+            <div key={plugin.i} className="plugin-card" style={{
+              marginTop: "20px",
+            }}>
               <div>
                 <h2>
                   {plugin.p.name} v{plugin.p.version}
@@ -121,6 +128,7 @@ const PluginManager = ({ close }: { close: () => void }) => {
         <button
           style={{
             display: show ? "none" : "block",
+            marginTop: "20px",
           }}
           onClick={(e) => {
             setShow(true);
