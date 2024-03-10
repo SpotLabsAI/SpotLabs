@@ -25,6 +25,7 @@ export class CryptoService {
   private publicKeyBase64: string | null = null;
   public readonly deviceAlias: string;
   private intervalHandler: number | null = null;
+  public paused = false;
 
   /**
    * 1. Fetch this browser's public and private key pair. If no keypair exists, one will be generated and stored in localStorage.
@@ -92,6 +93,7 @@ export class CryptoService {
   }
 
   private async synchronize() {
+    if (this.paused) return;
     console.log("Synchronizing keys...");
     const secretKey = this.secretKey;
     if (secretKey === null) {

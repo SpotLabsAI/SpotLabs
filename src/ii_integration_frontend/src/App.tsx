@@ -4,20 +4,25 @@ import { initAuth } from "./lib/auth";
 import * as webllm from "@mlc-ai/web-llm";
 import Loading, { LoadingReport } from "./pages/Loading";
 import Home from "./pages/Home";
-import commandsJson from "./lib/commands.json";
 import PluginManager from "./pages/PluginManager";
 import Visualizer from "./pages/Visualizer";
+import { getCrypto } from "./lib/utils";
 
-function App() {
+const App = () => {
   const auth: WritableAuthContextType = useAuth();
 
   const [chat, setChat] = useState<webllm.ChatModule | null>(null);
   const [pluginWindowOpen, setPluginWindowOpen] = useState<boolean>(false);
-const [dataWindowOpen, setDataWindowOpen] = useState<boolean>(false);
+  const [dataWindowOpen, _setDataWindowOpen] = useState<boolean>(false);
   const [downloadReport, setDownloadReport] = useState<LoadingReport>({
     report: null,
     done: false,
   });
+
+  const setDataWindowOpen = (b: boolean) => {
+    getCrypto(auth).paused = b;
+    _setDataWindowOpen(b);
+  }
 
   useEffect(() => {
     initAuth(auth);
@@ -57,8 +62,6 @@ const [dataWindowOpen, setDataWindowOpen] = useState<boolean>(false);
     })();
     setChat(chat);
   }, []);
-
-  // Check if path is plugin_manager
 
   return (
     <main>

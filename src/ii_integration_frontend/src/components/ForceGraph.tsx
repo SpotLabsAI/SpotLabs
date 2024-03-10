@@ -12,7 +12,7 @@ interface Link {
   value: number;
 }
 
-interface ChartProps {
+export interface ChartProps {
   data: {
     nodes: Node[];
     links: Link[];
@@ -25,6 +25,11 @@ const Chart: React.FC<ChartProps> = ({ data, width, height }) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
+    // Delete the previous graph
+    if (svgRef.current) {
+      d3.select(svgRef.current).selectAll("*").remove();
+    }
+
     const color = d3.scaleOrdinal(d3.schemeCategory10);
     const links = data.links.map((d) => ({ ...d }));
     const nodes = data.nodes.map((d) => ({ ...d }));
