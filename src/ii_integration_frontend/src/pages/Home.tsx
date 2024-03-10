@@ -8,6 +8,8 @@ import { Shapes } from "lucide-react";
 import { plugin } from "../plugin/plugin";
 import { getFacts } from "../lib/utils";
 import { WritableFactContextType, useFact } from "../hooks/FactContext";
+import SupplyChainPlugin from "../plugin/supply_chain";
+import SustainabilityPlugin from "../plugin/sustainability";
 
 function Home({
   chat,
@@ -23,9 +25,9 @@ function Home({
 
   useEffect(() => {
     setAllPlugins(
-      getFacts(fact)
+      (getFacts(fact)
         ?.filter((fact) => fact.fact.type === "__plugin")
-        .map((fact) => JSON.parse(fact.fact.content)) ?? []
+        .map((fact) => JSON.parse(fact.fact.content)) ?? []).concat([SupplyChainPlugin, SustainabilityPlugin])
     );
 
     const blob = document.getElementById("blob");

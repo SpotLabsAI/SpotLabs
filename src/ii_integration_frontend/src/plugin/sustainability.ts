@@ -1,4 +1,4 @@
-import { plugin } from "./plugin.ts";
+import { plugin } from "./plugin";
 
 const SustainabilityPlugin: plugin = {
     name: "Company Sustainability Reporter",
