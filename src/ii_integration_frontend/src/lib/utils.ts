@@ -35,7 +35,7 @@ export function castFact(fact: FactState): InitializedFactState | null {
   }
   return fact as InitializedFactState;
 }
-export function outToFact(output: string, auth: WritableAuthContextType, fact: WritableFactContextType) {
+export async function outToFact(output: string, auth: WritableAuthContextType, fact: WritableFactContextType) {
   let funcName = "";
   let factString = "";
   let json;
@@ -56,7 +56,7 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
           origin: contents.origin,
           description: contents.description,
         };
-        const res = addFact(
+        const res = await addFact(
           {
             type: "supply_chain",
             content: JSON.stringify(createSupplyChain),
@@ -75,7 +75,7 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
           origin: contents2.origin,
           description: contents2.description,
         };
-        const res2 = updateFact(
+        const res2 = await updateFact(
           BigInt(contents2.id),
           {
             type: "supply_chain",
@@ -84,10 +84,11 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
           fact,
           auth
         );
+        console.log(res2);
         break;
       case "delete_supply_chain":
         let contents3 = json.args[0];
-        const res3 = deleteFact(BigInt(contents3.id), auth, fact);
+        const res3 = await deleteFact(BigInt(contents3.id), auth, fact);
         console.log(res3);
         break;
       case "report_sustainability":
@@ -95,7 +96,7 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
         const reportSustainability = {
           sustainabilityScore: contents4.sustainabilityScore
         }
-        const res4 = addFact(
+        const res4 = await addFact(
           {
             type: "supply_chain",
             content: JSON.stringify(reportSustainability),

@@ -15,9 +15,9 @@ const SupplyChainPlugin: plugin = {
     },
     {
       name: "Update",
-      description: "Update the supply chain.",
+      description: "Update a specified supply chain with new values.",
       accessible_facts: ["supply_chain"],
-      prompt_transformer: "$$input$$ from $$facts$$ Call the function update_supply_chain",
+      prompt_transformer: "$$input$$ from $$facts$$ Call the function update_supply_chain. You will only update the specified field.",
     },
     {
       name: "Create",
