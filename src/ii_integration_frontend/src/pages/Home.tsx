@@ -8,13 +8,17 @@ import { Shapes } from "lucide-react";
 import { plugin } from "../plugin/plugin";
 import { getFacts } from "../lib/utils";
 import { WritableFactContextType, useFact } from "../hooks/FactContext";
+import SupplyChainPlugin from "../plugin/supply_chain";
+import SustainabilityPlugin from "../plugin/sustainability";
 
 function Home({
   chat,
   pluginManagerOpen,
+  dataWindowOpen,
 }: {
   chat: webllm.ChatModule | null;
   pluginManagerOpen: () => void;
+  dataWindowOpen: () => void;
 }) {
   const fact: WritableFactContextType = useFact();
 
@@ -23,9 +27,9 @@ function Home({
 
   useEffect(() => {
     setAllPlugins(
-      getFacts(fact)
+      (getFacts(fact)
         ?.filter((fact) => fact.fact.type === "__plugin")
-        .map((fact) => JSON.parse(fact.fact.content)) ?? []
+        .map((fact) => JSON.parse(fact.fact.content)) ?? []).concat([SupplyChainPlugin, SustainabilityPlugin])
     );
 
     const blob = document.getElementById("blob");
@@ -44,7 +48,10 @@ function Home({
 
   return (
     <div className="app">
-      <Toolbar setPluginManagerOpen={pluginManagerOpen} />
+      <Toolbar
+        setPluginManagerOpen={pluginManagerOpen}
+        setDataWindowOpen={dataWindowOpen}
+      />
       <div className="main-section">
         <div id="blob"></div>
         <div id="blur"></div>
