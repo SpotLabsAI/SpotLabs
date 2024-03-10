@@ -2,11 +2,11 @@ SpotLabs is a DeAI platform that builds business infrastructure.
 
 ## Our Mission
 
-At SpotLabs, our mission is to empower businesses with cutting-edge DeAI solutions. We strive to revolutionize the way businesses operate by providing advanced infrastructure that leverages the power of AI and decentralized computing. Through our innovative technologies, we aim to enhance efficiency, security, and scalability for enterprises across various industries.
+At SpotLabs, our mission is to empower businesses with the benefits of DeAI technology. Our simple user interface provides enterprises with tools to manage their infrastructure, storing their confidential information with utmost security while providing a large set of tools and a growing ecosystem of plugins. This new model of computation unlocks a vast variety of new possibilities, bringing AI-powered tools to the heart of enterprise infrastructure.
 
 ## How it Works
 
-SpotLabs is a growing ecosystem of plugins, also known as "Spots", that can both store encrypted sensitive company information, as well as provide AI with the ability to create and modify this data. This new model of computation unlocks new avenues in
+SpotLabs constitutes of a variety of plugins, also known as "Spots", that can both store encrypted sensitive company information, as well as provide AI with the ability to create and modify this data. These Spots are easily programmable, and are shared across an entire organization, allowing each member to benefit from the AI tools provided. This system allows organization members to collaborate in new ways, promoting security, efficiency and transformation. 
 
 ## Behind the Scenes
 
