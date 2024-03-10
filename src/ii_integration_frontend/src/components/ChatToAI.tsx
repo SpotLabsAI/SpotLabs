@@ -5,6 +5,8 @@ import * as webllm from "@mlc-ai/web-llm";
 import { CornerDownRight } from "lucide-react";
 import Dropdown from "./Dropdown";
 import { plugin, plugin_func } from "../plugin/plugin";
+import { outToFact } from "../lib/utils";
+import { WritableAuthContextType, useAuth } from "../hooks/AuthContext";
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -30,6 +32,7 @@ function ChatToAI({
   const [dots, setDots] = useState<string>("");
   const [currFunc, setCurrFunc] = useState<plugin_func>(plugin.functions[0]);
   const fact: WritableFactContextType = useFact();
+  const auth: WritableAuthContextType = useAuth();
 
   function addChatMessage(message: {
     content: string;
@@ -81,9 +84,8 @@ function ChatToAI({
                 )}
                 <div
                   key={index}
-                  className={`chat-message sender-${
-                    message.sender === "user" ? "user" : "ai"
-                  } ${message.error ? "error" : ""}`}
+                  className={`chat-message sender-${message.sender === "user" ? "user" : "ai"
+                    } ${message.error ? "error" : ""}`}
                 >
                   {message.sender === "ai" ? (
                     <CornerDownRight
@@ -136,7 +138,11 @@ function ChatToAI({
                   ?.filter((fact) =>
                     currFunc.accessible_facts.includes(fact.fact.type)
                   )
-                  .map((fact) => JSON.parse(fact.fact.content)) || [];
+                  .map((fact) => {
+                    return {
+                      id: fact.id, fact: JSON.parse(fact.fact.content)
+                    }
+                  }) || [];
               const factsAsString = JSON.stringify(facts);
               const prompt = currFunc.prompt_transformer
                 .replaceAll("$$facts$$", factsAsString)
@@ -147,12 +153,14 @@ function ChatToAI({
                   (await chat?.generate(prompt, (_, curr) => {
                     console.log(curr);
                   })) || "";
+                await chat?.resetChat();
 
                 addChatMessage({
                   content: res,
                   sender: "ai",
                   error: false,
                 });
+                outToFact(res, auth, fact);
               })();
             }}
           >

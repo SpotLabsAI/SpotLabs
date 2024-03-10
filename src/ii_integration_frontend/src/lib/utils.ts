@@ -35,22 +35,20 @@ export function castFact(fact: FactState): InitializedFactState | null {
   }
   return fact as InitializedFactState;
 }
-export function outToFact(output: string, auth: WritableAuthContextType, fact: WritableFactContextType, factID: bigint) {
+export function outToFact(output: string, auth: WritableAuthContextType, fact: WritableFactContextType) {
   let funcName = "";
   let factString = "";
-  const json = JSON.parse(output);
-  funcName = json.function;
+  let json;
+  try {
+    json = JSON.parse(output);
+  } catch {
+    throw new Error("Unable to parse output into JSON");
+  }
 
-  const regex = /\{(.+?)\}/g; // Matches all occurrences of curly brackets and captures the content inside
-    const matches = output.match(regex); // Finding all matches in the input string
-    if (matches && matches.length >= 2) {
-        factString = matches[0] + matches.slice(-1); // Returning the content captured between the first and last occurrences of curly brackets
-    } else {
-        throw new Error("Unable to parse output into fact"); // If less than two curly brackets are found, return null
-    }
+  funcName = json.function;
     switch (funcName) {
       case "create_supply_chain":
-        let contents = json.args;
+        let contents = json.args[0];
         const createSupplyChain = {
           title: contents.title,
           deliveryDate: contents.deliverDate,
@@ -66,17 +64,19 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
           fact,
           auth
         );
+        break;
       case "update_supply_chain":
-        let contents2 = json.args;
+        let contents2 = json.args[0];
         const updateSupplyChain = {
-          title: contents.title,
-          deliveryDate: contents.deliverDate,
-          receiveDate: contents.receiveDate,
-          origin: contents.origin,
-          description: contents.description,
+          id: contents2.id,
+          title: contents2.title,
+          deliveryDate: contents2.deliverDate,
+          receiveDate: contents2.receiveDate,
+          origin: contents2.origin,
+          description: contents2.description,
         };
         const res2 = updateFact(
-          factID,
+          BigInt(contents2.id),
           {
             type: "supply_chain",
             content: JSON.stringify(updateSupplyChain),
@@ -84,10 +84,14 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
           fact,
           auth
         );
+        break;
       case "delete_supply_chain":
-        const res3 = deleteFact(factID, auth, fact);
+        let contents3 = json.args[0];
+        const res3 = deleteFact(BigInt(contents3.id), auth, fact);
+        console.log(res3);
+        break;
       case "report_sustainability":
-        let contents4 = json.args;
+        let contents4 = json.args[0];
         const reportSustainability = {
           sustainabilityScore: contents4.sustainabilityScore
         }
@@ -99,6 +103,7 @@ export function outToFact(output: string, auth: WritableAuthContextType, fact: W
           fact,
           auth
         );
+        break;
       default:
         throw new Error("Command unrecognized: ", json.function)
 

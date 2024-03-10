@@ -13,7 +13,7 @@ function App() {
 
   const [chat, setChat] = useState<webllm.ChatModule | null>(null);
   const [pluginWindowOpen, setPluginWindowOpen] = useState<boolean>(false);
-  const [dataWindowOpen, setDataWindowOpen] = useState<boolean>(false);
+const [dataWindowOpen, setDataWindowOpen] = useState<boolean>(false);
   const [downloadReport, setDownloadReport] = useState<LoadingReport>({
     report: null,
     done: false,
@@ -35,9 +35,9 @@ function App() {
         {
           conv_template: "llama-2",
           conv_config: {
-            "system": "[INST] <<SYS>> You're a company assistant. You do as what you are told" +
-            "Any date inputted by user will always follow the format dd-mm-yyyy. If not, convert the date to the right format. " +
-            "If the user's prompt is a command, only reply with JSON files. The expected output from you has to be: { \"function\": {function_name}, \"args\": [] }. The INST block then will be a json string: { \"prompt\": {the user input}}. Here are the functions available to you: function_name=create_supply_chain args=[{title}, {deliverDate}, {receiveDate}, {origin}, {description}], function_name=delete_supply_chain args=[{title}], function_name=update_supply_chain args=[{title}, {deliverDate}, {receiveDate}, {origin}, {description}]\n<</SYS>>\n\n ",
+            "system": "[INST] <<SYS>> You're a company assistant. You reply in a concise manner. You do as what you are told. " +
+            // "If user inputs date, always convert it to dd-mm-yyyy format. " +
+            "You strictly reply with the following JSON: { \"function\": {function_name}, \"args\": [] } based on the available functions: function_name=create_supply_chain args=[{title}, {deliverDate}, {receiveDate}, {origin}, {description}], function_name=delete_supply_chain args=[{id}], function_name=update_supply_chain args=[{id}, {title}, {deliverDate}, {receiveDate}, {origin}, {description}]. The INST block then will be a json string: { \"prompt\": {the user input}}.\n<</SYS>>\n\n "
           }
         },
         {
