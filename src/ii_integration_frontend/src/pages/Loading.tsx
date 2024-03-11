@@ -62,6 +62,7 @@ const Loading = ({ report }: { report: LoadingReport }) => {
           ) : (
             <>
               <h2>Loading...</h2>
+              <p>Loading may take a while. A GPU with 8GB of VRAM is needed.</p>
               {auth.value.state !== "initialized" ? (
                 <p>{map.get(auth.value.state)}</p>
               ) : (

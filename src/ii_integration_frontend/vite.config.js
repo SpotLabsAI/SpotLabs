@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import environment from 'vite-plugin-environment';
 import dotenv from 'dotenv';
+import {viteStaticCopy} from 'vite-plugin-static-copy';
 
 dotenv.config({ path: '../../.env' });
 
@@ -18,6 +19,10 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
+    fs: {
+      allow: ["."],
+    },
     proxy: {
       "/api": {
         target: "http://127.0.0.1:4943",
@@ -29,6 +34,14 @@ export default defineConfig({
     react(),
     environment("all", { prefix: "CANISTER_" }),
     environment("all", { prefix: "DFX_" }),
+    viteStaticCopy({
+      targets: [
+				{
+					src: 'src/.ic-assets.json5',
+					dest: '.',
+				},
+			]
+    }),
   ],
   resolve: {
     alias: [

@@ -15,15 +15,16 @@
       "workspace": "ii_integration_frontend"
     },
     "internet_identity": {
+      "type": "custom",
       "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "frontend": {},
+      "wasm": "https://github.com/dfinity/internet-identity/releases/download/release-2023-04-12/internet_identity_dev.wasm.gz",
+      "shrink": false,
       "remote": {
+        "candid": "internet_identity.did",
         "id": {
           "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
         }
-      },
-      "type": "custom",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+      }
     }
   },
   "defaults": {

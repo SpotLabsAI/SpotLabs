@@ -13,7 +13,7 @@ export async function initAuth(auth: WritableAuthContextType) {
   const client = await AuthClient.create({
     idleOptions: { disableIdle: true },
   });
-  console.log("Client Made")
+  console.log("Client Made");
   if (await client.isAuthenticated()) {
     authenticate(auth, client);
   } else {
@@ -30,7 +30,10 @@ export function login(auth: WritableAuthContextType) {
 
   if (currentAuth.state === "anonymous") {
     currentAuth.client.login({
-      identityProvider: `http://be2us-64aaa-aaaaa-qaabq-cai.localhost:4943/`,
+      identityProvider:
+        process.env.DFX_NETWORK === "ic"
+          ? "https://identity.ic0.app/#authorize"
+          : `http://be2us-64aaa-aaaaa-qaabq-cai.localhost:4943/`,
       onSuccess: () => authenticate(auth, currentAuth.client),
     });
   }

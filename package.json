@@ -15,8 +15,7 @@
   "workspaces": [
     "src/ii_integration_frontend"
   ],
-  "dependencies": {
-  },
   "devDependencies": {
+    "vite-plugin-static-copy": "^1.0.1"
   }
 }
