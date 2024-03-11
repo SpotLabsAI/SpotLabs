@@ -1,6 +1,7 @@
 ![image](https://github.com/SpotLabsAI/SpotLabs/assets/59017703/59f70322-e05b-47ad-9efc-a366b00bf6af)
 
-SpotLabs is a DeAI platform that builds business infrastructure. [Try Spot.](https://d4acv-saaaa-aaaal-qdlea-cai.icp0.io/)
+SpotLabs.ai revolutionises the landscape of AI platforms with its decentralised framework tailored specifically for businesses. At its core, Spot leverages the formidable capabilities of locally operated Large Language Models (LLMs) to furnish enterprises with an unparalleled ecosystem. This ecosystem empowers businesses to seamlessly deploy decentralised AI applets for the processing of sensitive company data, all while upholding unprecedented levels of security and privacy.
+ [Try Spot.](https://d4acv-saaaa-aaaal-qdlea-cai.icp0.io/)
 
 ## Our Mission
 
