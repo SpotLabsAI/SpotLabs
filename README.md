@@ -1,4 +1,6 @@
-SpotLabs is a DeAI platform that builds business infrastructure.
+![image](https://github.com/SpotLabsAI/SpotLabs/assets/59017703/59f70322-e05b-47ad-9efc-a366b00bf6af)
+
+SpotLabs is a DeAI platform that builds business infrastructure. [Try Spot.](https://d4acv-saaaa-aaaal-qdlea-cai.icp0.io/)
 
 ## Our Mission
 
@@ -12,4 +14,10 @@ SpotLabs constitutes of a variety of plugins, also known as "Spots", that can bo
 
 Behind the scenes, SpotLabs utilizes a LLM running locally on WebGPU. This enables us to handle user input with efficiency and security, ensuring that sensitive business data remains protected. Additionally, we leverage decentralized computing on the Internet Computer Protocol (ICP) to store encrypted business data in a secure and decentralized manner. By combining these cutting-edge technologies, we create a robust infrastructure that enables businesses to thrive in the digital age while maintaining the highest standards of privacy and security.
 
+## How to build a Spot Plugin
+
+To build a spot plugin, please refer to our [documentation](https://spotlabsai.github.io/).
+
 ## Next Steps
+
+We're planning to expand our ecosystem by increasing Spot (Plugin) functionality, providing more ways to interact with the LLM, and providing new ways to visualize data.
