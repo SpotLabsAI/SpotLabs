@@ -1,6 +1,6 @@
 ![image](https://github.com/SpotLabsAI/SpotLabs/assets/59017703/59f70322-e05b-47ad-9efc-a366b00bf6af)
 
-SpotLabs is a DeAI platform that builds business infrastructure.
+SpotLabs is a DeAI platform that builds business infrastructure. [Try Spot.](https://d4acv-saaaa-aaaal-qdlea-cai.icp0.io/)
 
 ## Our Mission
 
