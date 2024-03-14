@@ -24,7 +24,7 @@
           //   See: https://github.com/WebAssembly/content-security-policy/blob/main/proposals/CSP.md.
           // - We added img-src data: because data: images are used often.
           // - frame-ancestors: none mitigates clickjacking attacks. See https://owasp.org/www-community/attacks/Clickjacking.
-          "Content-Security-Policy": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src https://fonts.googleapis.com/* 'unsafe-inline'; font-src * data:; script-src * 'unsafe-eval'; img-src * data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; frame-src 'self'; manifest-src 'self'; worker-src 'self'; connect-src *; object-src 'none'; media-src *; script-src-elem *; style-src-elem *;",
+          "Content-Security-Policy": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src https://fonts.googleapis.com/* 'unsafe-inline'; font-src * data:; script-src * 'unsafe-eval'; img-src * data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; frame-src *; manifest-src 'self'; worker-src 'self'; connect-src *; object-src 'none'; media-src *; script-src-elem *; style-src-elem *;",
 
           // Security: The permissions policy disables all features for security reasons. If your site needs such permissions, activate them.
           // To configure permissions go here https://www.permissionspolicy.com/

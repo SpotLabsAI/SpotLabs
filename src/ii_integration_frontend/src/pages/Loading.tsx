@@ -62,7 +62,7 @@ const Loading = ({ report }: { report: LoadingReport }) => {
           ) : (
             <>
               <h2>Loading...</h2>
-              <p>Loading may take a while. A GPU with 8GB of VRAM is needed.</p>
+              <p>Loading may take a while. A GPU with 12GB of VRAM is needed.</p>
               {auth.value.state !== "initialized" ? (
                 <p>{map.get(auth.value.state)}</p>
               ) : (
@@ -90,7 +90,18 @@ const Loading = ({ report }: { report: LoadingReport }) => {
               ) : (
                 <></>
               )}
-              <LoaderCircle size={"50px"} />
+              <LoaderCircle size={"50px"} style={{
+                marginBottom: "50px"
+              }}/>
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/UkWxtTFz3OM?si=7d1BFlGSpKVO2e2e&autoplay=1"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
             </>
           )}
         </div>
